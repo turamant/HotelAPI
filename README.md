@@ -8,3 +8,9 @@ Hotel management system
 - Application API for designing a mobile client and for completely separating the client and server parts of the application
 - The ability to make multiple reservations for different periods and rooms
 - Possibility to choose the number of people living in the room
+
+
+pip install -r requirements.txt
+
+> sh run.sh prod;  for production
+> sh run.sh dev;   for development
