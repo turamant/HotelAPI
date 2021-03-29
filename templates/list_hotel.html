@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Hotel List. {% endblock %}
+
+{% block content %}
+<h2>Hotel List.</h2>
+<ul>
+{% for hotel in object_list %}
+    <li><a href="{{ hotel.get_absolute_url }}">{{ hotel.name }}</a></li>
+    {{hotel.zip_code}}
+{% endfor %}
+</ul>
+
+{% endblock %}

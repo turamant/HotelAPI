@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 from rest_auth.registration.views import RegisterView,LoginView
 from rest_framework.routers import SimpleRouter
 
-from hotel.views import HotelList, RoomList, RoomCategoryList, ReservationList, PaymentList
+from hotel.views import HotelList, RoomList, RoomCategoryList, ReservationList, PaymentList, SaleList
 
 router = SimpleRouter()
 
@@ -16,11 +16,14 @@ router.register('api/room',RoomList)
 router.register('api/rcat',RoomCategoryList)
 router.register('api/reserv',ReservationList)
 router.register('api/payment',PaymentList)
+router.register('api/sale',SaleList)
 
 urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('',TemplateView.as_view(template_name='index.html'), name='index'),
+    path('hotel/',include('hotel.urls')),
+    path('orders/',include('orders.urls')),
 
     #API endpoints
     path('api/auth/register/',RegisterView.as_view()),

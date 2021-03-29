@@ -1,8 +1,11 @@
 # Create your models here.
 import uuid
+
+import stripe
 from django.conf import settings
 from django.db import models
 #from django.contrib.gis.db import models as gis_models
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
 # Create your models here.
@@ -12,6 +15,7 @@ class Hotel(models.Model):
         max_length=255,
         verbose_name= _('Name of Hotel'),
     )
+    slug = models.SlugField(max_length=255,null=True)
     address = models.CharField(
         max_length=255,
         blank=True,
@@ -42,7 +46,10 @@ class Hotel(models.Model):
         verbose_name_plural = _('Hotels')
 
     def __str__(self):
-        return f'{self.id}: {self.name}'
+        return f'{self.name}'
+
+    def get_absolute_url(self):
+        return reverse('detail_hotel', kwargs={"slug": self.slug})
 
 class RoomCategory(models.Model):
     """ Category of room """
@@ -60,12 +67,18 @@ class RoomCategory(models.Model):
         blank=True,
         null=True,
     )
+    price_for_night = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        help_text='Цена за одну ночь',
+        null=True,
+    )
     class Meta:
         verbose_name = _('RoomCategory')
         verbose_name_plural = _('RoomCategories')
 
     def __str__(self):
-        return f'{self.id}: {self.name}'
+        return f'{self.name}'
 
 
 class Room(models.Model):
@@ -95,6 +108,7 @@ class Room(models.Model):
     def __str__(self):
         return f'{self.hotel}: {self.number}'
 
+
 class Reservation(models.Model):
     """ Reservation Model """
     guid = models.UUIDField(
@@ -102,6 +116,10 @@ class Reservation(models.Model):
         default=uuid.uuid4,
         primary_key=True,
     )
+    slug = models.SlugField(max_length=255,null=True)
+    hotel = models.ForeignKey(to=Hotel,on_delete=models.CASCADE,null=True)
+    room = models.ForeignKey(to=Room,on_delete=models.CASCADE,null=True)
+
     start_date = models.DateField(
         verbose_name=_('Start date of reservation'),
         blank=True,
@@ -130,6 +148,9 @@ class Reservation(models.Model):
 
     def __str__(self):
         return f'{self.period}: {self.customer}'
+
+    def get_absolute_url(self):
+        return reverse('detail_reserv', kwargs={"slug": self.slug})
 
     @property
     def period(self):
@@ -180,8 +201,8 @@ class Sale(models.Model):
         super(Sale,self).__init__(*args, **kwargs)
 
         #bring in stripe, and get the api key from settings.py
-        api_key = settings.STRIPE_SECRET_KEY
-        self.stripe = api_key
+        stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
+        self.stripe = stripe
     charge_id = models.CharField(
         max_length=32,
     )

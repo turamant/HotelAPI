@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Бронирование номера. {% endblock %}
+
+{% block content %}
+
+<h2>Бронирование номера.</h2>
+{{ r.guid }}
+{{ r.hotel.name }}
+{{ r.start_date }}
+{{ r.end_date }}
+{{ r.period }}
+{{ r.guests_number }}
+{{ r.customer }}
+
+<a href="">Бронировать!</a>
+
+<ul>
+    <h2>Все отели</h2>
+{% for h in hotel_all %}
+   {{h.name}}
+{% endfor %}
+</ul>
+
+<ul>
+    <h2>Все номера</h2>
+{% for r in room_all %}
+   {{r.room_category}}
+{% endfor %}
+</ul>
+
+
+    {% endblock %}

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from hotel.models import Hotel, Room, RoomCategory, Reservation, Payment
+from hotel.models import Hotel, Room, RoomCategory, Reservation, Payment, Sale
 
 
 class HotelSerializer(serializers.ModelSerializer):
@@ -30,3 +30,8 @@ class PaymentSerializer(serializers.ModelSerializer):
         model = Payment
         fields = ('guid','reservation','customer','datetime',
                   'is_paid','amount')
+
+class SaleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sale
+        fields = ('charge_id','payment')

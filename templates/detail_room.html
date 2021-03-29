@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Detail Room. {% endblock %}
+
+{% block content %}
+
+<h2>Detail Room.</h2>
+<ul>
+    <li>Номер комнаты: {{ room.number }}</li>
+    <ul>
+        <li>Категория номера: {{ room.room_category.name }}</li>
+        <li>Максимальное количесвто гостей: {{ room.room_category.max_guest }}</li>
+        <li>Описание номера: {{room.room_category.description}}</li>
+        <li>Цена за одну ночь: {{ room.room_category.price_for_night }} рублей</li>
+    </ul>
+    <li>Hotel: {{ room.hotel.name }}</li>
+    {% if room.is_free %}
+        <li>Is_free: Номер свободен</li>
+    {% else %}
+        <li>Is_free: Номер занят</li>
+    {% endif %}
+</ul>
+<a href="{% url 'create_reservation' %}">Бронировать!</a>
+{% endblock %}

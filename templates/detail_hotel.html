@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Detail Hotel. {% endblock %}
+
+{% block content %}
+<h2>Detail Hotel.</h2>
+<ul>
+    <li>Name: {{ hotel.name }}</li>
+    <li>Address: {{ hotel.address }}</li>
+    <li>Zip_code: {{ hotel.zip_code }}</li>
+    <li>Description: {{ hotel.description }}</li>
+    <ul>
+    {% for r in hotel.rooms.all %}
+    <p><a href="{% url 'detail_room' r.pk %}">Номер комнаты: {{ r.number }}</a>
+    <li>(Категория номера: {{ r.room_category.name }},
+         Описание номера: {{ r.room_category.description }},
+         Максимальное количесвто гостей: {{r.room_category.max_guest }},
+
+    </li>
+        (Отель: {{ r.hotel.name }})
+        {% if r.is_free %}
+            (Статус: номер свободен)</p>
+        {% else %}
+            (Статус: номер занят)</p>
+        {% endif %}
+        Цена номера за одну ночь: {{ r.room_category.price_for_night }} рублей.)
+    {% endfor %}
+    </ul>
+</ul>
+{% endblock %}

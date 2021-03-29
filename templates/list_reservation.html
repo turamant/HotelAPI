@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Лист бронирования отеля. {% endblock %}
+
+{% block content %}
+<h2>Reservation list.</h2>
+<ul>
+{% for r in object_list %}
+    <li><a href="{{ r.get_absolute_url }}">{{ r.guid }}</a></li>
+        {{ r.hotel.name }}
+        {{ r.room.room_category }}
+            {{ r.start_date }}
+            {{ r.end_date }}
+            Период:{{  r.period }}
+            Гостей: {{  r.guests_number }}
+            {{ r.customer }}
+        {{ r.room.room_category.price_for_night }}
+{% endfor %}
+</ul>
+{% endblock%}
