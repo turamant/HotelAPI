@@ -1,4 +1,4 @@
-# myHotelAPI
+#HotelAPI
 Hotel management system
 - Providing rooms of different categories
 - The ability to manage multiple hotels
